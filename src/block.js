@@ -11,7 +11,8 @@ class Block{
 
   draw(){ 
     if (this.vis){
-      strokeWeight(0);
+      strokeWeight(4);
+      fill(0, 255 , 100);
       rect(this.x, this.y, this.w, this.h);
     }
   }
