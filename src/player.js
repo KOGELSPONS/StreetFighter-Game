@@ -7,6 +7,8 @@ class Player {
     this.xSpeed = 0;
     this.ySpeed = 0;
     this.jumping = false;
+    this.attacking = false;
+    this.attacked = false;
     this.facing = options.facing;
     this.mx = options.x + (options.w/2);
     this.my = options.y + (options.h/2);
@@ -67,7 +69,7 @@ class Player {
   display() {
     strokeWeight(2);
     fill(255, 0 , 100);
-    rect(this.x, this.y, this.w, this.h);
+    //rect(this.x, this.y, this.w, this.h);
     if (!this.jumping && this.xSpeed == 0 && this.ySpeed <= 0.5) {
       if (this.facing == "right") {
         image(char1.right_idle, this.x, this.y, this.w, this.h);
@@ -106,7 +108,7 @@ class Player {
     this.xSpeed += pushx;
     this.ySpeed += pushy;
   }
-  ai(playerx, playery, playerw, playerh){
+  aimove(playerx, playery, playerw, playerh){
     this.mx = this.x + (this.w/2);
     this.my = this.y + (this.h/2);
     this.x += this.xSpeed;
@@ -121,9 +123,29 @@ class Player {
     rect(this.mx - 5, this.my - 5, 10, 10);
     
     if (playermx - this.mx < this.w && playermx - this.mx > 1){
-      console.log("attack right")
+      if (frameCount % 30 == 0 && !this.attacking && !this.attacked && random(["a","b"]) == "a"){
+        console.log("attack right");
+        setTimeout(function() {
+          character.attacked = false;
+          ai.attacking = false;
+        }, 400); // milliseconds = 0.4 seconds
+        this.attacking = true;
+        character.attacked = true;
+        character.push(10, -4);
+        cameraShake();
+      }
     } else if (playermx - this.mx > -this.w && playermx - this.mx < -1){
-      console.log("atteck left")
+      if (frameCount % 30 == 0 && !this.attacking && !this.attacked && random(["a","b"]) == "a"){
+        console.log("attack left");
+        this.attacking = true;
+        character.attacked = true;
+        setTimeout(function() {
+          character.attacked = false;
+          ai.attacking = false;
+        }, 400); // milliseconds = 0.4 seconds
+        character.push(-10, -4);
+        cameraShake();
+      }
     } else if (playermx < this.mx){
       this.xSpeed = -7;
       this.facing = "left";

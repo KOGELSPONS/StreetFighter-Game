@@ -3,7 +3,7 @@ function draw() {
   character.update();
   character.display();
   ai.display();
-  ai.ai(character.x, character.y, character.w, character.h);
+  ai.aimove(character.x, character.y, character.w, character.h);
   blocks.forEach(b => b.draw());
 }
 
@@ -25,7 +25,8 @@ function cameraShake(){
   cameraMode = "shake";
   setTimeout(function() {
     cameraMode = "still";
-  }, 100); // milliseconds = 0.1 seconds
+    ai.attacking = false;
+  }, 200); // milliseconds = 0.2 seconds
 }
 
 function mousePressed() {
@@ -46,5 +47,13 @@ function keyPressed() {
   } if (keyCode === 74) { //J
     character.push(10, -4);
     cameraShake();
+  } if (keyCode === 75) { //K
+    character.attacking = true;
+    ai.attacked = true;
+    setTimeout(function() {
+      ai.attacked = false;
+      character.attacking = false;
+    }, 400); // milliseconds = 0.4 seconds
+    ai.push(0, -10);
   }
 }
