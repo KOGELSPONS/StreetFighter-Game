@@ -2,13 +2,15 @@ function draw() {
   visual();
   character.update();
   character.display();
+  ai.display();
+  ai.ai(character.x, character.y, character.w, character.h);
   blocks.forEach(b => b.draw());
 }
 
 function visual(){
+  background(0);
   updatecamera();
-  background(100);
-  //image(overlay, 0, 0);
+  image(barbackground, 0, 0, W, H);
 }
 
 function updatecamera(){
