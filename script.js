@@ -1,9 +1,12 @@
 function draw() {
   visual();
+
   character.update();
-  character.display();
-  ai.display();
+  ai.random();
   ai.aimove(character.x, character.y, character.w, character.h);
+
+  charvisual();
+
   blocks.forEach(b => b.draw());
 }
 
@@ -13,7 +16,15 @@ function visual(){
   image(barbackground, 0, 0, W, H);
 }
 
+function charvisual(){
+  ai.display();
+  character.display();
+}
+
 function updatecamera(){
+  if ((frameCount - cameraFrameCount) >= 20){
+    cameraMode = "still";
+  } 
   if (cameraMode == "still") {
     gamecamera.setPosition(W/2, H/2, 780);
   } else if (cameraMode == "shake") {
@@ -23,10 +34,7 @@ function updatecamera(){
 
 function cameraShake(){
   cameraMode = "shake";
-  setTimeout(function() {
-    cameraMode = "still";
-    ai.attacking = false;
-  }, 200); // milliseconds = 0.2 seconds
+  cameraFrameCount = frameCount;
 }
 
 function mousePressed() {
@@ -48,12 +56,15 @@ function keyPressed() {
     character.push(10, -4);
     cameraShake();
   } if (keyCode === 75) { //K
-    character.attacking = true;
-    ai.attacked = true;
-    setTimeout(function() {
+    if (ai.freeze) {
+      ai.freeze = false;
       ai.attacked = false;
       character.attacking = false;
-    }, 400); // milliseconds = 0.4 seconds
-    ai.push(0, -10);
+    } else {
+      character.attacking = true;
+      ai.attacked = true;
+      ai.push(0, -10);
+      ai.freeze = true;
+    }
   }
 }

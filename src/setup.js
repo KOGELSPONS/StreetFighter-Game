@@ -8,14 +8,16 @@ var block;
 var blocks = [];
 
 //new Player/Block
-  character = new Player({x:200, y:H-444, w:312, h:444, facing:"right" ,vis:true});
-  ai = new Player({x:1088, y:H-444, w:312, h:444, facing:"left" ,vis:true});
+  character = new Player({x:200, y:H-444, w:312, h:444, facing:"right" ,vis:true, hpbarx: 50});
+  ai = new Player({x:1088, y:H-444, w:312, h:444, facing:"left" ,vis:true, hpbarx: 1050});
   platform = new Block({x:-5, y:H, w:1610, h:10, vis:true, color: '#1F0E1E'});
   blocks = [platform];
 
 // Variables
 var myCanvas;
 var cameraMode = "still";
+var cameraFrameCount = 0;
+var timer = 99;
 
 function setup() {
   myCanvas = createCanvas(W, H, WEBGL);
@@ -38,7 +40,10 @@ function setup() {
     char1.left_walking_backward = loadImage("data/character/character%201/ken-walkbL.gif");
     char1.right_jump = loadImage("data/character/character%201/ken-jumpR.gif");
     char1.left_jump = loadImage("data/character/character%201/ken-jumpL.gif");
-    //Character 2:
+    // char1.right_idle.resize(character.w, character.h);
+    // char1.left_idle.resize(character.w, character.h);
+    // char1.resize(character.w, character.h);
+    // //Character 2:
 
     //Character 3:
 
